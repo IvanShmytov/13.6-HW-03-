@@ -27,17 +27,11 @@ namespace FinalTask
                         Words.Add(item, 1);
                     }
                 }
-                int counter = 0;
                 var top10 = Words.OrderByDescending(pair => pair.Value).Take(10);
                 Console.WriteLine("10 слов, наиболее часто встречающихся в романе \'Обломов\':");
                 foreach (var item in top10)
                 {
-                    if (counter == 10) 
-                    {
-                        break;
-                    }
                     Console.WriteLine($"Слово \'{item.Key}\'  встречается в тексте {item.Value} раз");
-                    counter++;
                 }
             }
             catch (Exception ex)
