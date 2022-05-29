@@ -13,22 +13,32 @@ namespace FinalTask
             {
                 string Path = @"C:\Users\ivans\source\repos\13.6 (HW-03)\Text1.txt";
                 string Text = File.ReadAllText(Path);
-                char[] separators = new char[] { ' ', '.', ',', '-', '!', '?', ':', ';', '\n'};
-                string[] subs = Text.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-           
-                var Watch = Stopwatch.StartNew();
-                foreach (var item in subs)
+                var noPunctuationText = new string(Text.Where(c => !char.IsPunctuation(c)).ToArray());
+                string[] Subs = noPunctuationText.Split(new char[] { ' ', '\n', '\r', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                Dictionary<string, int> Words = new Dictionary<string, int>();
+                foreach (string item in Subs)
                 {
-                    StrLinkList.AddLast(item);
+                    if (Words.ContainsKey(item))
+                    {
+                        Words[item]++;
+                    }
+                    else
+                    {
+                        Words.Add(item, 1);
+                    }
                 }
-                Console.WriteLine($"Скорость вставки в связанный список: {Watch.Elapsed.TotalMilliseconds}  мс");
-
-                Watch = Stopwatch.StartNew();
-                foreach (var item in subs)
+                int counter = 0;
+                var top10 = Words.OrderByDescending(pair => pair.Value).Take(10);
+                Console.WriteLine("10 слов, наиболее часто встречающихся в романе \'Обломов\':");
+                foreach (var item in top10)
                 {
-                    StrList.Add(item);
+                    if (counter == 10) 
+                    {
+                        break;
+                    }
+                    Console.WriteLine($"Слово \'{item.Key}\'  встречается в тексте {item.Value} раз");
+                    counter++;
                 }
-                Console.WriteLine($"Скорость вставки в список: {Watch.Elapsed.TotalMilliseconds}  мс");
             }
             catch (Exception ex)
             {
